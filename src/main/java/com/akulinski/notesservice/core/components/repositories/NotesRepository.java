@@ -5,12 +5,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 public interface NotesRepository extends CrudRepository<NoteEntity, Integer> {
 
-    NoteEntity findByIdAndIsDeletedFalse(Integer id);
-
+    Optional<NoteEntity> findByIdAndIsCurrentTrueAndIsDeletedFalse(Integer id);
     @Override
     ArrayList<NoteEntity> findAll();
 }

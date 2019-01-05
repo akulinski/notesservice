@@ -13,16 +13,13 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Embeddable
 @MappedSuperclass
-public class BaseEntityWithVersioning {
+public class BaseEntity {
 
     @Column(name = "date_of_creation")
     private Date dateOfCreation;
 
     @Column(name = "date_of_modification")
     private Date dateOfModification;
-
-    @Column(name = "entity_version")
-    private Integer version;
 
     @PrePersist
     protected void onCreate() {
