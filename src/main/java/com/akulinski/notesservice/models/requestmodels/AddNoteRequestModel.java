@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NoteRequestModel {
-    private Integer id;
+public class AddNoteRequestModel {
     private String content;
+
 }

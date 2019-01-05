@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface NotesRepository extends CrudRepository<NoteEntity, Integer> {
 
     Optional<NoteEntity> findByIdAndIsCurrentTrueAndIsDeletedFalse(Integer id);
-    @Override
-    ArrayList<NoteEntity> findAll();
+
+    ArrayList<NoteEntity> findAllByIsCurrentTrueAndIsDeletedFalse();
 }

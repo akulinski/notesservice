@@ -3,7 +3,7 @@ package com.akulinski.notesservice.core.components.services;
 import com.akulinski.notesservice.core.components.entites.NoteEntity;
 import com.akulinski.notesservice.core.components.repositories.HistoryRepository;
 import com.akulinski.notesservice.core.components.repositories.NotesRepository;
-import com.akulinski.notesservice.models.requestmodels.NoteRequestModel;
+import com.akulinski.notesservice.models.requestmodels.UpdateNoteRequestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,14 @@ public class NoteUpdateService {
     }
 
     /**
-     * @param noteRequestModel
+     * @param updateNoteRequestModel
      * @throws IllegalArgumentException
      */
-    public void updateNote(NoteRequestModel noteRequestModel) throws IllegalArgumentException {
-        NoteEntity currentVersion = notesRepository.findByIdAndIsCurrentTrueAndIsDeletedFalse(noteRequestModel.getId())
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Note with id %s not found", noteRequestModel.getId())));
+    public void updateNoteContent(UpdateNoteRequestModel updateNoteRequestModel) throws IllegalArgumentException {
+        NoteEntity currentVersion = notesRepository.findByIdAndIsCurrentTrueAndIsDeletedFalse(updateNoteRequestModel.getId())
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Note with id %s not found", updateNoteRequestModel.getId())));
 
-        cloneAndUpdate(currentVersion, noteRequestModel.getContent());
+        cloneAndUpdate(currentVersion, updateNoteRequestModel.getContent());
     }
 
     private void cloneAndUpdate(NoteEntity noteEntity, String newContent) {
