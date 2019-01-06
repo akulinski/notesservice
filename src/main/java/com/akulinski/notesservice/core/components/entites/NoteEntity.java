@@ -20,6 +20,9 @@ public class NoteEntity extends BaseEntity {
     @Column(name = "id_note")
     private Integer id;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "note_content")
     private String content;
 

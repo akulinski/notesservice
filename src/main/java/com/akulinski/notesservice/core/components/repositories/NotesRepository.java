@@ -13,4 +13,7 @@ public interface NotesRepository extends CrudRepository<NoteEntity, Integer> {
     Optional<NoteEntity> findByIdAndIsCurrentTrueAndIsDeletedFalse(Integer id);
 
     ArrayList<NoteEntity> findAllByIsCurrentTrueAndIsDeletedFalse();
+
+    @Override
+    ArrayList<NoteEntity> findAll();
 }

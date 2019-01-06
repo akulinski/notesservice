@@ -13,6 +13,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.security.SecureRandom;
 
 @Component
 public class DataMock {
@@ -33,12 +34,15 @@ public class DataMock {
 
     private final HistoryRepository historyRepository;
 
+    private final SecureRandom secureRandom;
+
     @Autowired
     public DataMock(NotesRepository notesRepository, HistoryRepository historyRepository) {
         this.notesRepository = notesRepository;
         this.lorem = LoremIpsum.getInstance();
 
         this.historyRepository = historyRepository;
+        secureRandom = new SecureRandom();
     }
 
 
@@ -66,6 +70,7 @@ public class DataMock {
         HistoryEntity historyEntity = getHistoryEntityAndSaveToDb();
         NoteEntity noteEntity = new NoteEntity();
         noteEntity.setContent(lorem.getWords(wordsIntValue));
+        noteEntity.setTitle(lorem.getWords(10));
         noteEntity.setHistoryEntity(historyEntity);
         return noteEntity;
     }

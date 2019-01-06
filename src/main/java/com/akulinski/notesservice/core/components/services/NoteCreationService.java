@@ -4,7 +4,7 @@ import com.akulinski.notesservice.core.components.entites.HistoryEntity;
 import com.akulinski.notesservice.core.components.entites.NoteEntity;
 import com.akulinski.notesservice.core.components.repositories.HistoryRepository;
 import com.akulinski.notesservice.core.components.repositories.NotesRepository;
-import com.akulinski.notesservice.models.requestmodels.AddNoteRequestModel;
+import com.akulinski.notesservice.models.requestmodels.NoteRequestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +22,13 @@ public class NoteCreationService {
         this.historyRepository = historyRepository;
     }
 
-    public NoteEntity createNoteEntityFromRequest(@RequestBody AddNoteRequestModel addNoteRequestModel) {
+    public NoteEntity createNoteEntityFromRequest(@RequestBody NoteRequestModel noteRequestModel) {
         NoteEntity noteEntity = new NoteEntity();
         HistoryEntity historyEntity = new HistoryEntity();
         historyRepository.save(historyEntity);
         noteEntity.setHistoryEntity(historyEntity);
-        noteEntity.setContent(addNoteRequestModel.getContent());
+        noteEntity.setContent(noteRequestModel.getContent());
+        noteEntity.setTitle(noteRequestModel.getTitle());
         notesRepository.save(noteEntity);
         return noteEntity;
     }

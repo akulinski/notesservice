@@ -1,34 +1,42 @@
 package com.akulinski.notesservice.core.components.services;
 
 import com.akulinski.notesservice.core.components.entites.NoteEntity;
-import com.akulinski.notesservice.models.requestmodels.AddNoteRequestModel;
-import org.junit.Before;
+import com.akulinski.notesservice.models.requestmodels.NoteRequestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class NoteValidationServiceTest {
 
+    @Autowired
     private NoteValidationService noteValidationService;
 
-    @Before
-    public void setUp() throws Exception {
-        noteValidationService = new NoteValidationService();
-    }
 
     @Test
     public void checkIfNoteIsNotDeletedAndIsCurrent() {
+        NoteEntity noteEntity = getNoteEntity(false);
+        assertTrue(noteValidationService.checkIfNoteIsNotDeletedAndIsCurrent(noteEntity));
+    }
+
+    private NoteEntity getNoteEntity(boolean b) {
         NoteEntity noteEntity = mock(NoteEntity.class);
         Mockito.when(noteEntity.getIsCurrent()).thenReturn(true);
-        Mockito.when(noteEntity.getIsDeleted()).thenReturn(false);
-        assertTrue(noteValidationService.checkIfNoteIsNotDeletedAndIsCurrent(noteEntity));
+        Mockito.when(noteEntity.getIsDeleted()).thenReturn(b);
+        return noteEntity;
     }
 
 
@@ -42,30 +50,51 @@ public class NoteValidationServiceTest {
 
     @Test
     public void checkIsDeleted() {
-        NoteEntity noteEntity = mock(NoteEntity.class);
-        Mockito.when(noteEntity.getIsCurrent()).thenReturn(true);
-        Mockito.when(noteEntity.getIsDeleted()).thenReturn(true);
+        NoteEntity noteEntity = getNoteEntity(true);
         assertFalse(noteValidationService.checkIfNoteIsNotDeletedAndIsCurrent(noteEntity));
     }
 
     @Test
     public void contentNotEmpty() {
-        AddNoteRequestModel addNoteRequestModel = mock(AddNoteRequestModel.class);
-        Mockito.when(addNoteRequestModel.getContent()).thenReturn("Not empty");
-        assertTrue(noteValidationService.contentNotEmpty(addNoteRequestModel.getContent()));
+        NoteRequestModel noteRequestModel = mock(NoteRequestModel.class);
+        Mockito.when(noteRequestModel.getContent()).thenReturn("Not empty");
+        when(noteRequestModel.getTitle()).thenReturn("Mock title");
+
+        assertTrue(noteValidationService.contentAndTitleNotEmpty(noteRequestModel.getContent(), noteRequestModel.getTitle()));
+    }
+
+    @Test
+    public void titleEmpty() {
+        NoteRequestModel noteRequestModel = mock(NoteRequestModel.class);
+        Mockito.when(noteRequestModel.getContent()).thenReturn("Not empty");
+        when(noteRequestModel.getTitle()).thenReturn("");
+
+        assertFalse(noteValidationService.contentAndTitleNotEmpty(noteRequestModel.getContent(), noteRequestModel.getTitle()));
+    }
+
+    @Test
+    public void titleNull() {
+        NoteRequestModel noteRequestModel = mock(NoteRequestModel.class);
+        Mockito.when(noteRequestModel.getContent()).thenReturn("Not empty");
+        when(noteRequestModel.getTitle()).thenReturn(null);
+
+        assertFalse(noteValidationService.contentAndTitleNotEmpty(noteRequestModel.getContent(), noteRequestModel.getTitle()));
     }
 
     @Test
     public void contentEmpty() {
-        AddNoteRequestModel addNoteRequestModel = mock(AddNoteRequestModel.class);
-        Mockito.when(addNoteRequestModel.getContent()).thenReturn("");
-        assertFalse(noteValidationService.contentNotEmpty(addNoteRequestModel.getContent()));
+        NoteRequestModel noteRequestModel = mock(NoteRequestModel.class);
+        Mockito.when(noteRequestModel.getContent()).thenReturn("");
+        when(noteRequestModel.getTitle()).thenReturn("Mock title");
+
+        assertFalse(noteValidationService.contentAndTitleNotEmpty(noteRequestModel.getContent(), noteRequestModel.getTitle()));
     }
 
     @Test
     public void contentNull() {
-        AddNoteRequestModel addNoteRequestModel = mock(AddNoteRequestModel.class);
-        Mockito.when(addNoteRequestModel.getContent()).thenReturn(null);
-        assertFalse(noteValidationService.contentNotEmpty(addNoteRequestModel.getContent()));
+        NoteRequestModel noteRequestModel = mock(NoteRequestModel.class);
+        Mockito.when(noteRequestModel.getContent()).thenReturn(null);
+        when(noteRequestModel.getTitle()).thenReturn("Mock title");
+        assertFalse(noteValidationService.contentAndTitleNotEmpty(noteRequestModel.getContent(), noteRequestModel.getTitle()));
     }
 }

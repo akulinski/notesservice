@@ -3,7 +3,7 @@ package com.akulinski.notesservice.core.components.services;
 import com.akulinski.notesservice.core.components.entites.NoteEntity;
 import com.akulinski.notesservice.core.components.repositories.HistoryRepository;
 import com.akulinski.notesservice.core.components.repositories.NotesRepository;
-import com.akulinski.notesservice.models.requestmodels.UpdateNoteRequestModel;
+import com.akulinski.notesservice.models.requestmodels.NoteRequestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,28 +24,30 @@ public class NoteUpdateService {
      * @param updateNoteRequestModel
      * @throws IllegalArgumentException
      */
-    public void updateNoteContent(UpdateNoteRequestModel updateNoteRequestModel) throws IllegalArgumentException {
-        NoteEntity currentVersion = notesRepository.findByIdAndIsCurrentTrueAndIsDeletedFalse(updateNoteRequestModel.getId())
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Note with id %s not found", updateNoteRequestModel.getId())));
+    public void updateNoteContent(NoteRequestModel noteRequestModel, Integer id) throws IllegalArgumentException {
 
-        cloneAndUpdate(currentVersion, updateNoteRequestModel.getContent());
+        NoteEntity currentVersion = notesRepository.findByIdAndIsCurrentTrueAndIsDeletedFalse(id)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Note with id %s not found", id)));
+        cloneAndUpdate(currentVersion, noteRequestModel.getContent(), noteRequestModel.getTitle());
     }
 
-    private void cloneAndUpdate(NoteEntity noteEntity, String newContent) {
+    private void cloneAndUpdate(NoteEntity noteEntity, String newContent, String title) {
         clone(noteEntity);
-        updateNoteEntityWithNewestData(noteEntity, newContent);
+        updateNoteEntityWithNewestData(noteEntity, newContent, title);
     }
 
-    private void updateNoteEntityWithNewestData(NoteEntity noteEntity, String newContent) {
+    private void updateNoteEntityWithNewestData(NoteEntity noteEntity, String newContent, String title) {
         noteEntity.setContent(newContent);
         noteEntity.incrementVersion();
         noteEntity.setIsCurrent(true);
+        noteEntity.setTitle(title);
         notesRepository.save(noteEntity);
     }
 
     private void clone(NoteEntity toClone) {
         NoteEntity noteEntity = new NoteEntity();
         noteEntity.setContent(toClone.getContent());
+        noteEntity.setTitle(toClone.getTitle());
         noteEntity.setIsCurrent(false);
         noteEntity.setVersion(toClone.getVersion());
         noteEntity.setHistoryEntity(toClone.getHistoryEntity());
