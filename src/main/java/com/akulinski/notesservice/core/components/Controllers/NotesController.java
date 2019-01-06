@@ -49,8 +49,7 @@ public class NotesController {
         boolean isValidRequest = noteValidationService.contentAndTitleNotEmpty(noteRequestModel.getContent(), noteRequestModel.getTitle());
 
         if (isValidRequest) {
-            ResponseEntity x = tryToUpdateAndReturnResponse(noteRequestModel, id);
-            return x;
+            return tryToUpdateAndReturnResponse(noteRequestModel, id);
         } else {
             return new ResponseEntity<>("Cannot assign empty content to note", HttpStatus.BAD_REQUEST);
         }
