@@ -13,21 +13,14 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Embeddable
 @MappedSuperclass
-public class BaseEntity {
+class BaseEntity {
 
     @Column(name = "date_of_creation")
+    @Temporal(TemporalType.DATE)
     private Date dateOfCreation;
 
     @Column(name = "date_of_modification")
+    @Temporal(TemporalType.DATE)
     private Date dateOfModification;
 
-    @PrePersist
-    protected void onCreate() {
-        dateOfCreation = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        dateOfModification = new Date();
-    }
 }

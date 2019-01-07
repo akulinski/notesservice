@@ -59,7 +59,7 @@ public class NotesController {
     private ResponseEntity tryToUpdateAndReturnResponse(@RequestBody NoteRequestModel noteRequestModel, @PathVariable String id) {
         try {
             if (noteValidationService.titleOrContentDifferent(noteRequestModel.getContent(), noteRequestModel.getTitle(), Integer.parseInt(id))) {
-                noteUpdateService.updateNoteContent(noteRequestModel, Integer.parseInt(id));
+                NoteEntity noteEntity = noteUpdateService.updateNoteContent(noteRequestModel, Integer.parseInt(id));
                 return new ResponseEntity<>(new NoteUpdateResponseModel(String.format("Note with id %s was updated", id)), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(new NoteUpdateResponseModel(String.format("No changes found")), HttpStatus.BAD_REQUEST);

@@ -4,6 +4,7 @@ import com.akulinski.notesservice.core.components.entites.HistoryEntity;
 import com.akulinski.notesservice.core.components.entites.NoteEntity;
 import com.akulinski.notesservice.core.components.repositories.HistoryRepository;
 import com.akulinski.notesservice.core.components.repositories.NotesRepository;
+import com.akulinski.notesservice.utils.DateUtils;
 import com.thedeanda.lorem.Lorem;
 import com.thedeanda.lorem.LoremIpsum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.security.SecureRandom;
+import java.text.ParseException;
 
 @Component
 public class DataMock {
@@ -72,6 +74,11 @@ public class DataMock {
         noteEntity.setContent(lorem.getWords(wordsIntValue));
         noteEntity.setTitle(lorem.getWords(10));
         noteEntity.setHistoryEntity(historyEntity);
+        try {
+            noteEntity.setDateOfCreation(DateUtils.getFormattedDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return noteEntity;
     }
 

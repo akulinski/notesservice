@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class NotesControllerTest {
 
-    private final static String EXPECTED_CONTENT_AFTER_UPDATE = "{\"message\":\"Note with id 2 was updated\"}";
+    private final static String EXPECTED_CONTENT_AFTER_UPDATE = "Note with id 2 was updated";
 
     @Value("${notes.mock.count}")
     private String exptectedNumberOfNotes;
@@ -73,7 +73,7 @@ public class NotesControllerTest {
                 .andExpect(status()
                         .isOk())
                 .andExpect(content()
-                        .string(EXPECTED_CONTENT_AFTER_UPDATE));
+                        .string(containsString(EXPECTED_CONTENT_AFTER_UPDATE)));
     }
 
     @Test
@@ -82,13 +82,13 @@ public class NotesControllerTest {
 
         Integer currentversion = notesRepository.findById(2).get().getVersion();
 
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             this.mockMvc.perform(put("/notes/update-note/2").header("Content-type", "application/json").content(createJsonOfNoteUpdateRequest("Mock value", "Mock Title")));
         }
 
         Integer afterupdates = notesRepository.findById(2).get().getVersion();
 
-        assertEquals(currentversion,afterupdates);
+        assertEquals(currentversion, afterupdates);
     }
 
     @Test
