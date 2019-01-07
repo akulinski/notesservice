@@ -10,7 +10,6 @@ public class DateUtils {
 
     public static Date getFormattedDate() throws ParseException {
         String dateString = format.format(new Date());
-        System.out.println(dateString);
         return format.parse(dateString);
     }
 }
