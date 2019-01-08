@@ -28,7 +28,7 @@ If you want to turn off mocking of data set notes.mock.count = 0 in resources ap
 ```
 If during this step docker build fails please retry
 ```
-3.sudo docker build -t eg_postgresql .
+3. sudo docker build -t eg_postgresql .
 ```
 This makes postgres run on port 5433 so i won`t interfere with possible existing local installation
 ```
@@ -52,7 +52,53 @@ During start application creates mock data
 ## Running the tests
 
 ```$xslt
-    mvn clean test
+mvn clean test
+```
+
+#examples
+
+get all notes from db  
+
+```
+curl  http://localhost:8080/api/notes/get-all
+```
+
+get note with id 2
+```
+curl  http://localhost:8080/api/notes/get-note-by-id/2
+```
+
+
+update note with id 2
+
+```
+curl --header "Content-Type: application/json" \
+  --request PUT \
+  --data '{"content":"testcontent","title":"testtitle"}' \
+  http://localhost:8080/api/notes/update-note/2
+```
+
+delete note with id 2
+
+```
+  curl --request DELETE http://localhost:8080/api/notes/delete-note/2
+```
+add new note
+
+```
+  curl --header "Content-Type: application/json" --request POST \
+  --data '{"content":"testcontent","title":"testtitle"}' \
+   http://localhost:8080/api/notes/add-note
+```
+get all notes from history 
+
+```
+curl http://localhost:8080/api/notes/get-all
+```
+get history of note 2
+  
+```
+  curl http://localhost:8080/api/history/get-history/2
 ```
 
 ## Authors
