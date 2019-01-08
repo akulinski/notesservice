@@ -55,7 +55,7 @@ During start application creates mock data
 mvn clean test
 ```
 
-#examples
+## Examples
 
 get all notes from db  
 
