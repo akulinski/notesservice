@@ -2,6 +2,8 @@
 
 This is REST API for notes service written in spring boot 
 
+Application uses postgres and H2 database(resources/application.properties) for testing (test/resources/application.properties) 
+
 ### Prerequisites
 ``` 
 1. Install jdk 1.8 https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
@@ -15,6 +17,8 @@ This is REST API for notes service written in spring boot
 
 
 ### Installing
+
+If you want to turn off mocking of data set notes.mock.count = 0 in resources application.properties (do not change test application.properties )
 
 ```
 1. Open project root folder in terminal
