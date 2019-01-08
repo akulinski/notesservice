@@ -21,10 +21,7 @@ public class NoteUpdateService {
         this.notesRepository = notesRepository;
     }
 
-    /**
-     * @param updateNoteRequestModel
-     * @throws IllegalArgumentException
-     */
+
     public NoteEntity updateNoteContent(NoteRequestModel noteRequestModel, Integer id) throws IllegalArgumentException {
 
         NoteEntity currentVersion = notesRepository.findByIdAndIsCurrentTrueAndIsDeletedFalse(id)
@@ -49,6 +46,7 @@ public class NoteUpdateService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        noteEntity.incrementVersion();
         notesRepository.save(noteEntity);
         return noteEntity;
     }

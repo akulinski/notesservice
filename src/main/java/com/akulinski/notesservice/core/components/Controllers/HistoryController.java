@@ -43,7 +43,7 @@ public class HistoryController {
     }
 
     private HistoryEntity getHistoryEntity(@PathVariable String id) throws IllegalStateException {
-        return notesRepository.findByIdAndIsCurrentTrueAndIsDeletedFalse(Integer.parseInt(id)).orElseThrow(() -> new IllegalArgumentException(String.format("Note with id %s not found", id))).getHistoryEntity();
+        return notesRepository.findById(Integer.parseInt(id)).orElseThrow(() -> new IllegalArgumentException(String.format("Note with id %s not found", id))).getHistoryEntity();
     }
 
     private ResponseEntity<String> getResponseEntityWhenNoteDoesNotExist(@PathVariable String id, String s, HttpStatus badRequest) {
