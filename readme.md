@@ -97,7 +97,7 @@ add new note
 get all notes from history 
 
 ```
-curl http://localhost:8080/api/notes/get-all
+curl http://localhost:8080/api/history/get-all
 ```
 get history of note 2
   
