@@ -26,6 +26,8 @@ If you want to turn off mocking of data set notes.mock.count = 0 in resources ap
 ```$xslt
 2. sudo docker login
 ```
+Steps 3 and 4 creates database
+
 If during this step docker build fails please retry
 ```
 3. sudo docker build -t eg_postgresql .
@@ -34,6 +36,8 @@ This makes postgres run on port 5433 so i won`t interfere with possible existing
 ```
 4. sudo docker run --rm -P -p 5433:5432 --name pg_test eg_postgresql
 ```
+
+Open new terminal window and enter root of project
 
 ```
 5. mvn clean install
